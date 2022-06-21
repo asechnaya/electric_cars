@@ -3,7 +3,6 @@ from datetime import date, timedelta
 
 import requests
 
-
 BASE_LINK = "https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/"
 
 
@@ -27,8 +26,8 @@ def calculate_values(money):
 
 
 def create_text(currency, mean, maximum, minimum):
-    the_text = f'Comparison of currencies $/{currency}: '\
-               f'min  = {minimum}, '\
-               f'max = {maximum}, '\
-               f'mean (average) = {mean} '
+    the_text = f'Comparison of currencies $/{currency}: ' \
+               f'min  = {minimum}, ' \
+               f'max = {maximum}, ' \
+               f'mean = {mean} '
     return the_text
