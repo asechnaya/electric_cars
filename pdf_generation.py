@@ -1,4 +1,4 @@
-from reportlab.lib.pagesizes import letter
+from reportlab.lib.pagesizes import A4
 from reportlab.pdfgen import canvas
 
 from currencies import calculate_dependence, calculate_values, create_text
@@ -9,7 +9,7 @@ title = 'All you need to know about currencies... '
 
 
 def add_image(image_path, textLines):
-    pdf = canvas.Canvas(fileName, pagesize=letter)
+    pdf = canvas.Canvas(fileName, pagesize=A4)
     pdf.setTitle(documentTitle)
     pdf.drawCentredString(330, 730, title)
     pdf.line(30, 710, 550, 710)

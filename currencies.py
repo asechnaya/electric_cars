@@ -20,15 +20,15 @@ def calculate_dependence(currency):
 
 
 def calculate_values(money):
-    mean = statistics.mean(money)
-    maximum = max(money)
-    minimum = min(money)
+    mean = round(statistics.mean(money), 2)
+    maximum = round(max(money), 2)
+    minimum = round(min(money), 2)
     return mean, maximum, minimum
 
 
 def create_text(currency, mean, maximum, minimum):
-    the_text = f'Comparison of currencies $/{currency}:'\
-               f'min value $ = {minimum}, '\
-               f'max value $ = {maximum}, '\
-               f'mean (average) value = {mean}'
+    the_text = f'Comparison of currencies $/{currency}: '\
+               f'min  = {minimum}, '\
+               f'max = {maximum}, '\
+               f'mean (average) = {mean} '
     return the_text
