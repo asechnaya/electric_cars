@@ -9,6 +9,7 @@ def plot_graph():
 
 
 if __name__ == '__main__':
+    print('start')
     image_path = 'currencies.png'
     currency_1 = 'gel'
     currency_2 = 'rub'

@@ -27,8 +27,8 @@ def calculate_values(money):
 
 
 def create_text(currency, mean, maximum, minimum):
-    the_text = [f'Comparison of currencies $/{currency}:',
-                f'min value $ = {minimum}, ',
-                f'max value $ = {maximum}, ',
-                f'mean (average) value = {mean}']
+    the_text = f'Comparison of currencies $/{currency}:'\
+               f'min value $ = {minimum}, '\
+               f'max value $ = {maximum}, '\
+               f'mean (average) value = {mean}'
     return the_text
