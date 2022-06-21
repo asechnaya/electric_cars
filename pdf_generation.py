@@ -13,7 +13,7 @@ def add_image(image_path, textLines):
     pdf.setTitle(documentTitle)
     pdf.drawCentredString(330, 730, title)
     pdf.line(30, 710, 550, 710)
-    text = pdf.beginText(30, 700)
+    text = pdf.beginText(30, 670)
     for line in textLines:
         text.textLine(line)
     pdf.drawText(text)
