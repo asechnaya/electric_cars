@@ -7,10 +7,8 @@ from currencies import calculate_dependence
 def create_graph(currency_1='gel', currency_2='rub'):
     x, y = calculate_dependence(currency_1)
     fig, ax = plt.subplots(figsize=(18, 18))
-    x_ticks = np.arange(0, 25, 5)
-    ax.set_xticks(x_ticks)
+
     plt.subplot(2, 1, 1)
-    plt.tick_params(axis='x', direction='in')
     plt.grid(True)
     plt.plot(x, y, "r--")
     create_annotation(currency_1)
@@ -23,13 +21,13 @@ def create_graph(currency_1='gel', currency_2='rub'):
     x1, y1 = calculate_dependence(currency_2)
     plt.bar(x1, y1, color='darkblue')
     create_annotation(currency_2)
+
     fig.tight_layout()
     plt.savefig('currencies.png')
 
-    plt.show()
-
 
 def create_annotation(currency):
+    plt.tick_params(axis='x', direction='in')
     plt.title(f"USD/{currency} dependence")
     plt.ylabel(f"{currency} in one $")
     plt.xlabel("date")
