@@ -5,12 +5,12 @@ from datetime import date, timedelta
 import requests
 
 BASE_LINK = "https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/"
+logging.basicConfig(filename='myapp.log', level=logging.ERROR)
 
 
 def calculate_dependence(currency, n=0):
     x, y = [], []
     i = 30
-    logging.basicConfig(filename='myapp.log', level=logging.ERROR)
     try:
         while i > n:
             target_date = date.today() - timedelta(days=i)
@@ -18,9 +18,11 @@ def calculate_dependence(currency, n=0):
             response = requests.get(link)
             if response.status_code != 200:
                 logging.error("Ошибка, Код ответа: %s", response.status_code)
+                return response.status_code
                 break
-            x.append(target_date.strftime("%d.%m"))
-            y.append(response.json()[currency])
+            else:
+                x.append(target_date.strftime("%d.%m"))
+                y.append(response.json()[currency])
             i -= 1
         return x, y
     except ConnectionError:
