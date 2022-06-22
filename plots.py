@@ -25,8 +25,6 @@ def create_graph(currency_1='gel', currency_2='rub'):
     fig.tight_layout()
     plt.savefig('currencies.png')
 
-    plt.show()
-
 
 def create_annotation(x, y, currency):
     plt.title(f"USD/{currency} dependence")
