@@ -1,4 +1,5 @@
 import statistics
+import time
 from datetime import date, timedelta
 
 import requests
@@ -9,13 +10,21 @@ BASE_LINK = "https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/"
 def calculate_dependence(currency):
     x, y = [], []
     i = 30
-    while i > 0:
-        target_date = date.today() - timedelta(days=i)
-        link = BASE_LINK + f"{target_date}/currencies/usd/{currency}.json"
-        x.append(target_date.strftime("%d.%m"))
-        y.append(requests.get(link).json()[currency])
-        i -= 1
-    return x, y
+    try:
+        while i > 0:
+            target_date = date.today() - timedelta(days=i)
+            link = BASE_LINK + f"{target_date}/currencies/usd/{currency}.json"
+            response = requests.get(link)
+            if response.status_code != 200:
+                print("Ошибка, Код ответа: %s", response.status_code)
+                time.sleep(1)
+                continue
+            x.append(target_date.strftime("%d.%m"))
+            y.append(response.json()[currency])
+            i -= 1
+        return x, y
+    except ConnectionError:
+        print("Ошибка ConnectionError")
 
 
 def calculate_values(money):
