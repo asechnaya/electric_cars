@@ -61,9 +61,9 @@ class TestDrive:
     @Parametrization.case('right margin', 1.9, 600)
     @Parametrization.case('middle value', 1.6, 800)
     def test_neutral_to_drive(self, api_connection, acc_pedal, battery):
-        """ Из припаркованного положения переключаемся на нейтраль"""
+        # Из припаркованного положения переключаемся на нейтраль
         set_default_parking_voltage()
-        """ Из нейтрального положения переключаемся на drive"""
+        # Из нейтрального положения переключаемся на drive
         set_default_drive_voltage()
         set_brake_released_pressed()
         set_battery_voltage(battery)
@@ -76,7 +76,6 @@ class TestDrive:
         assert response[4]['Value'] == 'Ready'
 
     """ Поехали после переключения передач """
-
     @Parametrization.parameters('acc_pedal', 'acceleration', 'torque')
     @Parametrization.case('0% left margin', 1.0, "0 %", '0 Nm')
     @Parametrization.case('0% right margin', 1.9, "0 %", '0 Nm')
@@ -91,16 +90,16 @@ class TestDrive:
     @Parametrization.case('100% right margin', 3.49, "100 %", '10000 Nm')
     @Parametrization.case('100% middle value', 3.2, "100 %", '10000 Nm')
     def test_positive_acc_pedal_during_drive(self, api_connection, acc_pedal, acceleration, torque):
+        # Переключили передачу в режим драйв
         set_default_drive_voltage()
-        """ отпускаем тормоз """
+        # отпускаем тормоз
         set_brake_released_pressed()
-        """Поехали"""
+        # Поехали
         set_acceleration_voltage(acc_pedal)
         pin = fetch_signals()
         assert pin[0]['Value'] == 'Drive' and pin[1]['Value'] == acceleration
         assert pin[2]['Value'] == 'Released' and pin[3]['Value'] == torque
         assert pin[4]['Value'] == 'Ready'
-        """ Возникают проблемы при 100% ускорении """
 
 
 @pytest.mark.xfail
@@ -140,11 +139,11 @@ class TestReverse:
     @Parametrization.case('100% middle value', 3.2, "100 %", '10000 Nm')
     def test_positive_acc_pedal_during_drive(self, api_connection, acc_pedal, acceleration, torque):
         set_default_reverse_voltage()
-        """ отпускаем тормоз """
+        # отпускаем тормоз
         set_brake_released_pressed()
-        """Поехали"""
+        # Поехали
         set_acceleration_voltage(acc_pedal)
-        """ Возникают проблемы при 100% ускорении """
+        # Возникают проблемы при 100% ускорении
         pin = fetch_signals()
         assert pin[0]['Value'] == 'Reverse' and pin[1]['Value'] == acceleration
         assert pin[2]['Value'] == 'Released' and pin[3]['Value'] == torque
