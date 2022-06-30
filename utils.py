@@ -14,7 +14,7 @@ def set_default_parking_voltage():
 def set_default_drive_voltage():
     for key, value in DEFAULT_DRIVE.items():
         payload = {"Voltage": value}
-        response = requests.post(key, data=payload)
+        requests.post(key, data=payload)
 
 
 def set_default_neutral_voltage():
