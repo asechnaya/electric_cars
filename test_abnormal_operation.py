@@ -3,7 +3,8 @@ from parametrization import Parametrization
 
 from main_urls import DEFAULT_NEUTRAL
 from utils import fetch_pins, fetch_signals, set_acceleration_voltage, set_battery_voltage, set_brake_released_pressed, \
-    set_default_drive_voltage, set_default_neutral_voltage, set_default_parking_voltage, set_gear1_voltage
+    set_default_drive_voltage, set_default_neutral_voltage, set_default_parking_voltage, set_gear1_voltage, \
+    set_gear2_voltage
 
 
 @pytest.mark.xfail
@@ -52,8 +53,9 @@ class TestMotor:
         assert signals[0]['Value'] == self.GearPosition and signals[1]['Value'] == acc_pos
         assert signals[2]['Value'] == 'Pressed' and signals[3]['Value'] == self.ReqTorque
         assert signals[4]['Value'] == 'NotReady'
-        """ отпустили тормоз """
+        """ отпустили тормоз, пытаемся ехать """
         set_gear1_voltage(3.12)
+        set_gear2_voltage(0.67)
         signals = fetch_signals()
         assert signals[0]['Value'] == self.GearPosition and signals[1]['Value'] == acc_pos
         assert signals[2]['Value'] == 'Pressed' and signals[3]['Value'] == self.ReqTorque
@@ -95,3 +97,24 @@ class TestIdling:
         assert signal[0]['Value'] == 'Neutral' and signal[1]['Value'] == acceleration
         assert signal[2]['Value'] == 'Pressed' and signal[3]['Value'] == torque
         assert signal[4]['Value'] == 'Ready'
+
+
+class TestBrakes:
+    GearPosition = 'Park'
+    AccPedalPos = '0 %'
+    BrakePedalState = 'Error'
+    ReqTorque = '0 Nm'
+    BatteryState = 'Ready'
+
+    @Parametrization.parameters('brake')
+    @Parametrization.case('error margin behind left', 0)
+    @Parametrization.case('error margin left', 0.9)
+    @Parametrization.case('error margin right', 3)
+    @Parametrization.case('error margin behind right', 3.1)
+    def test_brakes_extreme_values(self, api_connection, brake):
+        set_default_parking_voltage()
+        set_brake_released_pressed(brake)
+        pin = fetch_signals()
+        assert self.GearPosition == pin[0]['Value'] and pin[1]['Value'] == self.AccPedalPos
+        assert pin[2]['Value'] == self.BrakePedalState and pin[3]['Value'] == self.ReqTorque
+        assert pin[4]['Value'] == self.BatteryState

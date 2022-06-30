@@ -8,7 +8,6 @@ from utils import fetch_signals, set_acceleration_voltage, set_battery_voltage, 
     set_default_drive_voltage, set_default_neutral_voltage, set_default_parking_voltage, set_default_reverse_voltage
 
 
-@pytest.mark.BLOCKER
 class TestPark:
     @Parametrization.parameters('acc_pedal', 'battery', 'brake')
     @Parametrization.case('left margin', 1.0, 400.1, 2)
@@ -28,7 +27,6 @@ class TestPark:
         set_acceleration_voltage(acc_pedal)
         set_battery_voltage(battery)
         pin = requests.get(SIGNALS_URL).json()
-        print(pin)
         assert pin[0]['Value'] == 'Park' and pin[1]['Value'] == '0 %'
         assert pin[2]['Value'] == 'Released' and pin[3]['Value'] == '0 Nm'
         assert pin[4]['Value'] == 'Ready'
@@ -51,7 +49,6 @@ class TestNeutral:
         set_acceleration_voltage(acc_pedal)
         set_battery_voltage(battery)
         pin = fetch_signals()
-        print(pin)
         assert pin[0]['Value'] == 'Neutral' and pin[1]['Value'] == '0 %'
         assert pin[2]['Value'] == 'Released' and pin[3]['Value'] == '0 Nm'
         assert pin[4]['Value'] == 'Ready'
@@ -149,29 +146,6 @@ class TestReverse:
         set_acceleration_voltage(acc_pedal)
         """ Возникают проблемы при 100% ускорении """
         pin = fetch_signals()
-        print(pin)
         assert pin[0]['Value'] == 'Reverse' and pin[1]['Value'] == acceleration
         assert pin[2]['Value'] == 'Released' and pin[3]['Value'] == torque
         assert pin[4]['Value'] == 'Ready'
-
-
-class TestBrakes:
-    GearPosition = 'Park'
-    AccPedalPos = '0 %'
-    BrakePedalState = 'Error'
-    ReqTorque = '0 Nm'
-    BatteryState = 'Ready'
-
-    @Parametrization.parameters('brake')
-    @Parametrization.case('error margin behind left', 0)
-    @Parametrization.case('error margin left', 0.9)
-    @Parametrization.case('error margin right', 3)
-    @Parametrization.case('error margin behind right', 3.1)
-    def test_brakes_extreme_values(self, api_connection, brake):
-        set_default_parking_voltage()
-        set_brake_released_pressed(brake)
-        pin = fetch_signals()
-        print(pin)
-        assert self.GearPosition == pin[0]['Value'] and pin[1]['Value'] == self.AccPedalPos
-        assert pin[2]['Value'] == self.BrakePedalState and pin[3]['Value'] == self.ReqTorque
-        assert pin[4]['Value'] == self.BatteryState
