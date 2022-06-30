@@ -5,9 +5,7 @@ from parametrization import Parametrization
 
 from main_urls import SIGNALS_URL, UPDATE_ACC
 from utils import fetch_signals, set_acceleration_voltage, set_battery_voltage, set_brake_released_pressed, \
-    set_default_drive_voltage, \
-    set_default_neutral_voltage, \
-    set_default_parking_voltage, set_default_reverse_voltage
+    set_default_drive_voltage, set_default_neutral_voltage, set_default_parking_voltage, set_default_reverse_voltage
 
 
 @pytest.mark.BLOCKER
