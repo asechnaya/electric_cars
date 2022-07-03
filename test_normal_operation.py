@@ -26,7 +26,7 @@ class TestPark:
         set_brake_released_pressed(brake)
         set_acceleration_voltage(acc_pedal)
         set_battery_voltage(battery)
-        pin = requests.get(SIGNALS_URL).json()
+        pin = fetch_signals()
         assert pin[0]['Value'] == 'Park' and pin[1]['Value'] == '0 %'
         assert pin[2]['Value'] == 'Released' and pin[3]['Value'] == '0 Nm'
         assert pin[4]['Value'] == 'Ready'
@@ -148,3 +148,5 @@ class TestReverse:
         assert pin[0]['Value'] == 'Reverse' and pin[1]['Value'] == acceleration
         assert pin[2]['Value'] == 'Released' and pin[3]['Value'] == torque
         assert pin[4]['Value'] == 'Ready'
+
+
